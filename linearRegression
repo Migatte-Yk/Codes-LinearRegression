@@ -1,0 +1,33 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+
+electricity_production = np.array([40, 80, 50, 100, 60, 90, 70, 120, 30, 110, 140, 50, 160, 20, 130, 170, 90, 160, 70, 180, 110, 140, 100, 200, 190, 45, 130, 55, 100, 60, 72, 80, 120, 30, 110, 140, 54, 160, 120, 130, 178, 90, 160, 75, 180, 110, 140, 100, 200, 190, 40, 180, 50, 125, 60, 98, 70, 120, 30, 110, 140, 55, 160, 20, 130, 170, 65, 160, 70, 210, 110, 140, 100, 200, 190, 140, 90, 50, 105, 70, 90, 70, 120, 30, 150, 140, 50, 160, 30, 130, 170, 90, 160, 70, 200, 110, 140, 100, 200, 190])
+electricity_demand = np.array([35, 70, 45, 85, 55, 75, 65, 95, 25, 90, 110, 40, 120, 15, 100, 130, 80, 115, 60, 125, 85, 105, 80, 140, 130, 35, 70, 145, 85, 55, 75, 65, 95, 25, 90, 120, 40, 120, 15, 90, 130, 80, 115, 60, 125, 85, 135, 80, 140, 130, 35, 70, 45, 85, 55, 75, 65, 40, 25, 98, 110, 40, 120, 15, 100, 130, 100, 115, 70, 155, 85, 105, 95, 140, 130, 85, 70, 45, 145, 55, 65, 65, 95, 25, 78, 110, 40, 120, 45, 100, 130, 80, 135, 60, 125, 85, 105, 90, 140, 130])
+
+x=electricity_production.reshape(-1,1)
+y=electricity_demand
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+
+model=LinearRegression()
+model.fit(x_train,y_train)
+
+y_pred=model.predict(x_test)
+
+r2_score=model.score(x_test,y_test)
+print("R2 Score:",r2_score)
+coefficient=model.coef_[0]
+print("Coefficient:",coefficient)
+intercept=model.intercept_
+print("Intercept:",intercept)
+
+plt.scatter(x_test,y_test,color='red')
+plt.plot(x_test,y_pred,color='blue',linestyle = '-', linewidth= 3)
+plt.xlabel('electricity_production')
+plt.ylabel('electricity_demand')
+plt.title('electricity production vs electricity demand')
+plt.legend(['Actual','Predicted'])
+plt.show()
